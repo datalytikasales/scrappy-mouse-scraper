@@ -6,21 +6,34 @@ import { toast } from "sonner";
 export const ScrapForm = () => {
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [generatedFile, setGeneratedFile] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success("Job completed successfully! Want to try another?", {
-        action: {
-          label: "New Scrape",
-          onClick: () => setUrl(""),
+
+    try {
+      const response = await fetch("/scrape/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
         },
+        body: new URLSearchParams({ url }),
       });
-    }, 2000);
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("Job completed successfully!");
+        setGeneratedFile(data.file_url);
+      } else {
+        toast.error(data.error || "Something went wrong!");
+      }
+    } catch (error) {
+      toast.error("Failed to scrape the URL. Please try again!");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -41,6 +54,20 @@ export const ScrapForm = () => {
           {isLoading ? "Processing..." : "Start Scraping"}
         </Button>
       </form>
+
+      {generatedFile && (
+        <div className="mt-4">
+          <p>Download your file:</p>
+          <a
+            href={generatedFile}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:underline"
+          >
+            {generatedFile}
+          </a>
+        </div>
+      )}
     </div>
   );
 };
