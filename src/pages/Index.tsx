@@ -1,12 +1,21 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Hero } from "@/components/Hero";
+import { ScrapForm } from "@/components/ScrapForm";
+import { FilesList } from "@/components/FilesList";
+import { PricingSection } from "@/components/PricingSection";
+import { ProjectsCarousel } from "@/components/ProjectsCarousel";
+import { Footer } from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen">
+      <Hero />
+      <main className="py-20">
+        <ScrapForm />
+        <FilesList />
+      </main>
+      <PricingSection />
+      <ProjectsCarousel />
+      <Footer />
     </div>
   );
 };
