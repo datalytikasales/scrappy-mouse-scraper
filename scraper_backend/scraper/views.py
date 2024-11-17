@@ -18,7 +18,6 @@ if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
 @csrf_exempt
-
 def home(request):
     return HttpResponse("Welcome to the Scraper Backend!")
 
